@@ -4,13 +4,17 @@ import requests
 import configuration
 
 # Получение token пользователя
-def get_user_token():
     return requests.post(configuration.URL_SERVICE + configuration.CREATE_USER_PATH,
                          json=data.user_body,
                          headers=data.headers
                          )
 response_token = get_user_token()
-data.auth_token["Authorization"] = "Bearer " + response_token.json()["authToken"]
+get_headers_with_token():
+     response = sender_stand_request.post_new_user(data.headers)
+     auth_token = response.json()["authToken"] 
+     headers_with_token = data.headers.copy()
+     headers_with_token["Authorization"] = "Bearer " + auth_token
+     return headers_with_token
 
 # Функция для изменения значения в параметре name в теле запроса
 def get_kit_body(name):
@@ -26,7 +30,8 @@ def positive_assert(name):
     # В переменную kit_body сохраняется обновленное тело запроса
     kit_body = get_kit_body(name)
     # В переменную kit_respons сохраняется результат запроса на создание набора:
-    kit_respons = sender_stand_request.post_new_client_kit(kit_body, data.auth_token)
+    headers_with_token = get_headers_with_token()
+ kit_respons = sender_stand_request.post_new_client_kit(kit_body, headers_with_token)
     # Проверяется, что код ответа равен 201
     assert kit_respons.status_code == 201
     # Проверяется, что в ответе есть поле name и оно не пустое
@@ -34,8 +39,8 @@ def positive_assert(name):
 
 #Функция для негативной проверки
 def negative_assert_code_400(kit_body):
-    #kit_body = get_kit_body(name)
-    response = sender_stand_request.post_new_client_kit(kit_body, data.auth_token)
+ headers_with_token = get_headers_with_token()
+ kit_respons = sender_stand_request.post_new_client_kit(kit_body, headers_with_token)
     assert response.status_code == 400
 
 # Тест 1. Успешное создание набора пользователя
