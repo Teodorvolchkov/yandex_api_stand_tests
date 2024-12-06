@@ -12,4 +12,4 @@ def post_new_client_kit (kit_body, auth_token):
 # В переменную response сохраняется результат
 response = post_new_client_kit(data.kit_body, data.auth_token)
 print(response.status_code)
-print(response.json())
+
