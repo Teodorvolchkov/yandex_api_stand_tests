@@ -4,11 +4,12 @@ import requests
 import configuration
 
 # Получение token пользователя
+
     return requests.post(configuration.URL_SERVICE + configuration.CREATE_USER_PATH,
                          json=data.user_body,
                          headers=data.headers
                          )
-response_token = get_user_token()
+
 get_headers_with_token():
      response = sender_stand_request.post_new_user(data.headers)
      auth_token = response.json()["authToken"] 
